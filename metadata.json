@@ -1,0 +1,7 @@
+{
+  "name": "OpenJournal Discover",
+  "description": "A need-driven open journal application for sharing and discovering public reflections with a focus on emotional connection and breathable UI.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
