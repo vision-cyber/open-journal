@@ -19,7 +19,8 @@ const MyJournals: React.FC<MyJournalsProps> = ({ onEntryClick }) => {
 
     const q = query(
       collection(db, "journals"), 
-      where("userId", "==", user.uid)
+      where("userId", "==", user.uid),
+      where("spaceId", "==", null)
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {

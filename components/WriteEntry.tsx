@@ -163,7 +163,7 @@ const WriteEntry: React.FC<WriteEntryProps> = ({ onClose, onSave, editingPost, i
         </div>
       </header>
 
-      <main className="flex-1 overflow-y-auto no-scrollbar pb-32">
+      <main className="flex-1 overflow-y-auto no-scrollbar pb-20">
         <div className="max-w-xl mx-auto px-4 pt-4 space-y-6">
           
           <div className="grid grid-cols-2 gap-2">
@@ -229,32 +229,37 @@ const WriteEntry: React.FC<WriteEntryProps> = ({ onClose, onSave, editingPost, i
             <div 
               ref={editorRef}
               contentEditable
-              className="w-full bg-transparent border-none p-0 text-base font-light text-slate-300 focus:ring-0 min-h-[400px] outline-none leading-relaxed prose prose-invert max-w-none"
+              className="w-full bg-transparent border-none p-0 text-base font-light text-slate-300 focus:ring-0 min-h-[300px] outline-none leading-relaxed prose prose-invert max-w-none"
             />
           </div>
-          
-          <div className="pt-6 border-t border-white/5 space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 font-bold text-xs">#</span>
-                <input 
-                  type="text"
-                  value={tagInput}
-                  onChange={e => setTagInput(e.target.value)}
-                  onKeyDown={handleAddTag}
-                  placeholder="ADD TAG"
-                  className="w-full h-9 pl-6 pr-3 bg-white/5 border border-white/5 rounded-lg text-[10px] font-black uppercase tracking-widest placeholder:text-slate-700 focus:ring-primary focus:border-primary"
-                />
-              </div>
-              <button 
-                onClick={handleAISuggestTags}
-                className="h-9 px-3 bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest rounded-lg hover:bg-primary/20 transition-all flex items-center gap-1.5"
-              >
-                <span className="material-symbols-outlined text-sm">auto_awesome</span>
-                Suggest
-              </button>
-            </div>
+        </div>
+      </main>
 
+      {/* Fixed Tag Section */}
+      <div className="border-t border-white/5 bg-[#081416] px-4 py-3">
+        <div className="max-w-xl mx-auto space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 font-bold text-xs">#</span>
+              <input 
+                type="text"
+                value={tagInput}
+                onChange={e => setTagInput(e.target.value)}
+                onKeyDown={handleAddTag}
+                placeholder="ADD TAG"
+                className="w-full h-9 pl-6 pr-3 bg-white/5 border border-white/5 rounded-lg text-[10px] font-black uppercase tracking-widest placeholder:text-slate-700 focus:ring-primary focus:border-primary"
+              />
+            </div>
+            <button 
+              onClick={handleAISuggestTags}
+              className="h-9 px-3 bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest rounded-lg hover:bg-primary/20 transition-all flex items-center gap-1.5 shrink-0"
+            >
+              <span className="material-symbols-outlined text-sm">auto_awesome</span>
+              AI
+            </button>
+          </div>
+
+          {tags.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {tags.map((tag, i) => (
                 <span key={i} className="px-2 py-1 bg-white/5 border border-white/10 text-slate-500 text-[9px] font-black uppercase tracking-widest rounded flex items-center gap-1.5">
@@ -263,21 +268,21 @@ const WriteEntry: React.FC<WriteEntryProps> = ({ onClose, onSave, editingPost, i
                 </span>
               ))}
             </div>
-          </div>
+          )}
         </div>
-      </main>
+      </div>
 
       {/* Magic Toolbar */}
-      <div className="fixed bottom-0 left-0 right-0 p-3 z-40 bg-gradient-to-t from-[#081416] via-[#081416] to-transparent">
-        <div className="max-w-md mx-auto h-14 bg-[#112124] border border-white/10 rounded-xl shadow-2xl flex items-center justify-around px-4">
+      <div className="bg-[#081416] p-3 border-t border-white/5">
+        <div className="max-w-md mx-auto h-12 bg-[#112124] border border-white/10 rounded-xl shadow-2xl flex items-center justify-around px-4">
           <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept="image/*" className="hidden" />
           
           <button 
             onClick={() => fileInputRef.current?.click()}
             className="flex flex-col items-center gap-0.5 text-slate-500 hover:text-white transition-colors"
           >
-            <span className="material-symbols-outlined text-xl">add_photo_alternate</span>
-            <span className="text-[7px] font-black uppercase tracking-[0.2em]">Upload</span>
+            <span className="material-symbols-outlined text-lg">add_photo_alternate</span>
+            <span className="text-[6px] font-black uppercase tracking-[0.2em]">Upload</span>
           </button>
 
           <button 
@@ -285,8 +290,8 @@ const WriteEntry: React.FC<WriteEntryProps> = ({ onClose, onSave, editingPost, i
             disabled={isGeneratingImage}
             className="flex flex-col items-center gap-0.5 text-slate-500 hover:text-primary transition-colors disabled:opacity-20"
           >
-            <span className="material-symbols-outlined text-xl">auto_videocam</span>
-            <span className="text-[7px] font-black uppercase tracking-[0.2em]">AI Visual</span>
+            <span className="material-symbols-outlined text-lg">auto_videocam</span>
+            <span className="text-[6px] font-black uppercase tracking-[0.2em]">AI Visual</span>
           </button>
           
           <div className="w-[1px] h-6 bg-white/10"></div>

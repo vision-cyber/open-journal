@@ -65,4 +65,4 @@ export interface AppNotification {
   read: boolean;
 }
 
-export type View = 'discover' | 'journal' | 'profile' | 'detail' | 'write' | 'activity' | 'spaces' | 'edit' | 'space_detail';
+export type View = 'discover' | 'journal' | 'profile' | 'detail' | 'write' | 'activity' | 'spaces' | 'edit' | 'space_detail' | 'space_perspective';

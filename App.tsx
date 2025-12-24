@@ -7,6 +7,7 @@ import { createJournal } from './services/journalService';
 import DiscoverView from './components/DiscoverView';
 import PostDetail from './components/PostDetail';
 import WriteEntry from './components/WriteEntry';
+import SpacePerspective from './components/SpacePerspective';
 import UserProfile from './components/UserProfile';
 import ActivityFeed from './components/ActivityFeed';
 import MyJournals from './components/MyJournals';
@@ -68,7 +69,7 @@ const App: React.FC = () => {
   if (authLoading) return <div className="min-h-screen bg-background-dark flex items-center justify-center text-primary font-black uppercase text-[10px] tracking-widest">Initializing...</div>;
   if (!currentUser) return <Login />;
 
-  const showNav = !['write', 'edit', 'detail'].includes(activeView);
+  const showNav = !['write', 'edit', 'detail', 'space_perspective'].includes(activeView);
 
   return (
     <div className="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto border-x border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark shadow-2xl">
@@ -89,8 +90,16 @@ const App: React.FC = () => {
             }} 
             onPostClick={handlePostClick}
             onWrite={() => {
-              setActiveView('write');
+              setActiveView('space_perspective');
             }}
+          />
+        )}
+        {activeView === 'space_perspective' && selectedSpace && (
+          <SpacePerspective 
+            spaceId={selectedSpace.id}
+            spaceName={selectedSpace.name}
+            onClose={() => setActiveView('space_detail')}
+            onSave={handleSaveEntry}
           />
         )}
         {activeView === 'profile' && <UserProfile onNavigate={setActiveView} />}

@@ -214,3 +214,41 @@ export const createSpace = async (name: string, description: string, providedCod
 
   return spaceId;
 };
+
+export const deleteSpace = async (spaceId: string) => {
+  const user = auth.currentUser;
+  if (!user) throw new Error("Unauthenticated");
+
+  // Verify ownership
+  const spaceDoc = await getDoc(doc(db, "spaces", spaceId));
+  if (!spaceDoc.exists()) throw new Error("Space not found");
+  
+  const spaceData = spaceDoc.data() as Space;
+  if (spaceData.createdBy !== user.uid) {
+    throw new Error("Unauthorized: Only space creator can delete");
+  }
+
+  // 1. Update journals to remove spaceId
+  const journalsQuery = query(collection(db, "journals"), where("spaceId", "==", spaceId));
+  const journalsSnap = await getDocs(journalsQuery);
+  for (const journalDoc of journalsSnap.docs) {
+    await updateDoc(journalDoc.ref, { spaceId: null, visibility: "private" });
+  }
+
+  // 2. Delete members
+  const membersQuery = query(collection(db, "spaces", spaceId, "members"));
+  const membersSnap = await getDocs(membersQuery);
+  for (const memberDoc of membersSnap.docs) {
+    await deleteDoc(memberDoc.ref);
+  }
+  
+  // 3. Delete userSpaces
+  const userSpacesQuery = query(collection(db, "userSpaces"), where("spaceId", "==", spaceId));
+  const userSpacesSnap = await getDocs(userSpacesQuery);
+  for (const userSpaceDoc of userSpacesSnap.docs) {
+    await deleteDoc(userSpaceDoc.ref);
+  }
+  
+  // 4. Delete space
+  await deleteDoc(doc(db, "spaces", spaceId));
+};
